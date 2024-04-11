@@ -29,5 +29,5 @@ Now you can go into the NBT file using VSCode (or any other preferred editor) wi
 those trains.
 
 ## Planned Features
-[ ] Command to reload NBT file\
-[ ] Automatic train deletion
+- [ ] Command to reload NBT file
+- [ ] Automatic train deletion
