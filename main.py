@@ -118,7 +118,7 @@ def start():
                 try:
                     train_graph = train['Graph']
                 except KeyError:
-                    missing_graph_trains.append(train)
+                    missing_graph_trains.append([train, trains])
                     continue
 
                 train_graph_id = to_str_graph(train_graph)
@@ -132,7 +132,7 @@ def start():
 
             print("\n")
             for train in missing_graph_trains:
-                print(f"\033[91mTrain {train['Name']} is missing a graph.\033[0m")
+                print(f"\033[91mTrain {train[0]['Name']}, index {train[1]} is missing a graph.\033[0m")
 
             print(f"\n{trains} total trains. Took {(dt2 - dt1).seconds} second(s)")
 
