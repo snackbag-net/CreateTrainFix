@@ -96,11 +96,12 @@ def start():
 
         elif action.startswith("dimtrain "):
             args = action.split()
-            if len(args) != 2:
+            if len(args) < 1:
                 print("Invalid arguments")
                 continue
 
             dim = args[1]
+
             if dim not in dimension_palette:
                 print(f"Invalid dimension! Dimensions can only be: {', '.join(dimension_palette)}")
                 continue
@@ -114,11 +115,13 @@ def start():
             trains = 0
             missing_graph_trains = []
             dt1 = datetime.datetime.now()
+            i = -1
             for train in trackfile["data"]["Trains"]:
+                i += 1
                 try:
                     train_graph = train['Graph']
                 except KeyError:
-                    missing_graph_trains.append([train, trains])
+                    missing_graph_trains.append([train, i])
                     continue
 
                 train_graph_id = to_str_graph(train_graph)
