@@ -137,7 +137,14 @@ def start():
 
             print("\n")
             for train in missing_graph_trains:
-                print(f"\033[91mTrain {train[0]['Name']}, index {train[1]} is missing a graph.\033[0m")
+                print(f"\033[91mTrain {train[0]['Name']}, index {train[1]} is missing a graph. (Owned by {get_owner([train[0]['Owner'][0], train[0]['Owner'][1], train[0]['Owner'][2], train[0]['Owner'][3]])})\033[0m")
+
+            # for train in reversed(missing_graph_trains):
+            #     print(f"\033[91mAutodelete: {train[1]}/{train[0]['Name']}\033[0m")
+            #     del trackfile["data"]["Trains"][train[1]]
+            #     print(f"\033[91mDeleted {train[0]['Name']}\033[0m")
+            #
+            # trackfile.write_file("input/create_tracks_new.dat")
 
             print(f"\n{trains} total trains. Took {(dt2 - dt1).seconds} second(s)")
 
