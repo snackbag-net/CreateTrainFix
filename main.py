@@ -130,7 +130,7 @@ def start():
                 if train_graph_id not in correct_graphs:
                     continue
 
-                print(f"Train {train['Name']}")
+                print(f"Train {train['Name']}, owned by {get_owner([train['Owner'][0], train['Owner'][1], train['Owner'][2], train['Owner'][3]])}")
                 trains += 1
 
             dt2 = datetime.datetime.now()
@@ -151,13 +151,18 @@ def get_owner(uuid_: list[int]):
     lsb1 = uuid_[2]
     lsb2 = uuid_[3]
 
-    # Pack these integers as unsigned 64-bit values
-    msb = struct.unpack('>Q', struct.pack('>q', (msb1 << 32) | msb2))[0]
-    lsb = struct.unpack('>Q', struct.pack('>q', (lsb1 << 32) | lsb2))[0]
+    # Convert to unsigned 32-bit integers
+    msb1_unsigned = msb1 & 0xFFFFFFFF
+    msb2_unsigned = msb2 & 0xFFFFFFFF
+    lsb1_unsigned = lsb1 & 0xFFFFFFFF
+    lsb2_unsigned = lsb2 & 0xFFFFFFFF
+
+    # Combine to form the 128-bit integer
+    most_significant_bits = (msb1_unsigned << 32) | msb2_unsigned
+    least_significant_bits = (lsb1_unsigned << 32) | lsb2_unsigned
 
     # Create the UUID
-    owner_uuid = uuid.UUID(int=(msb << 64) | lsb)
-
+    owner_uuid = uuid.UUID(int=((most_significant_bits << 64) | least_significant_bits))
     return owner_uuid
 
 def get_graphs_in_dimension(dim_nbr: int, dimension_palette: list, trackfile: nbt.NBTFile) -> list:
