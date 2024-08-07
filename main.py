@@ -1,5 +1,7 @@
 import datetime
+import struct
 import sys
+import uuid
 
 from nbt import nbt
 
@@ -142,6 +144,21 @@ def start():
         else:
             print("Unknown command")
 
+
+def get_owner(uuid_: list[int]):
+    msb1 = uuid_[0]
+    msb2 = uuid_[1]
+    lsb1 = uuid_[2]
+    lsb2 = uuid_[3]
+
+    # Pack these integers as unsigned 64-bit values
+    msb = struct.unpack('>Q', struct.pack('>q', (msb1 << 32) | msb2))[0]
+    lsb = struct.unpack('>Q', struct.pack('>q', (lsb1 << 32) | lsb2))[0]
+
+    # Create the UUID
+    owner_uuid = uuid.UUID(int=(msb << 64) | lsb)
+
+    return owner_uuid
 
 def get_graphs_in_dimension(dim_nbr: int, dimension_palette: list, trackfile: nbt.NBTFile) -> list:
     graphs = 0
